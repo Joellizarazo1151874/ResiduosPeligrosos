@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario de Residuos</title>
+  
+  
+</head>
+<body>
+  <h1>Formulario de Residuos</h1>
+
+  <form onsubmit="event.preventDefault(); calcularResiduo();" class="">
+    <div>
+      <label for="tipoResiduo">Tipo de Residuo:</label>
+      <input type="text" id="tipoResiduo" name="tipoResiduo" required>
+    </div>
+
+    <div>
+      <label for="ubicacion">Ubicación Geográfica:</label>
+      <input type="text" id="ubicacion" name="ubicacion" required>
+    </div>
+
+    <button type="submit">Enviar</button>
+    <div class="mt-3">
+    <p id="result"></p>
+  </div>
+  </form>
+
+   <script type="text/javascript">
+    var modelo = null;
+
+    (async() => {
+      console.log("Cargando modelo...");
+      modelo = await tf.loadLayersModel("residuosPeligrosos.joblib");
+      console.log("Modelo cargado");
+    })();
+
+    window.onload = function() {
+      mostrarCamara();
+    }
+
+    function predecirResultado() {
+      var fechaActual = new Date(); // Obtener la fecha actual
+      var añoActual = fechaActual.getFullYear(); // Obtener el año actual
+
+      // Generar una fecha simulada (restamos 1 al año actual)
+      var fechaSimulada = new Date(añoActual - 1, 0, 1); // 1 de enero del año anterior
+      var añoSimulado = fechaSimulada.getFullYear(); // Obtener el año simulado
+
+      // Comparar las fechas
+      if (añoSimulado < añoActual) {
+        // El año simulado es anterior al año actual
+        // Realizar la predicción para el siguiente año
+        var cantidad = new Data(); // Resultado de la predicción
+
+        // Mostrar el resultado
+        document.getElementById("result").innerHTML = "Según la predicción basada en datos de años anteriores, se estima que en " + ubicacion +" se producirá el próximo año " + cantidad + " Kg de residuos " + tipoPeligrosidad;
+      } else {
+        // El año simulado es igual o posterior al año actual
+        // No es posible realizar la predicción
+        document.getElementById("result").innerHTML = "No se dispone de suficientes datos para realizar una predicción precisa para el próximo año.";
+      }
+    }
+    </script>
+ 
+
+</body>
+
+<style>
+    
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 50px;
+      background-color: #fff;
+      
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    div {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #f2f2f2;
+    }
+
+    button[type="submit"] {
+      background-color: transparent;
+      color: #4CAF50;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button[type="submit"]:hover {
+      color: white;
+      background-color: #4CAF50;
+    }
+  </style>
+
+</html>
+
+<script src="javascript.js"></script>
